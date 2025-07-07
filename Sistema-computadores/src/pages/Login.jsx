@@ -3,6 +3,7 @@ import { useNavigate, useLocation, Navigate } from "react-router-dom";
 import { Container, Form, Button, Alert, Card } from "react-bootstrap";
 import { FaEnvelope, FaLock, FaSignInAlt, FaUserPlus } from "react-icons/fa";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 import "./login.css";
 
 export default function Login() {
@@ -157,11 +158,7 @@ export default function Login() {
         </div>
       </Container>
 
-      <footer className="login-footer">
-        <div className="footer-content">
-          <p>© {new Date().getFullYear()} PU Suporte e Manutenção. Todos os direitos reservados.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

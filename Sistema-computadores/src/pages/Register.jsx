@@ -11,6 +11,7 @@ import {
   FaSignInAlt 
 } from "react-icons/fa";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 import "./register.css";
 
 export default function Register() {
@@ -218,11 +219,7 @@ export default function Register() {
         </div>
       </Container>
 
-      <footer className="register-footer">
-        <div className="footer-content">
-          <p>© {new Date().getFullYear()} PU Suporte e Manutenção. Todos os direitos reservados.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
