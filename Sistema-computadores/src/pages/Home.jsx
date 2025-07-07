@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Card, Button, Row, Col, Container, Badge } from "react-bootstrap";
 import { servicosManutencao } from "../mocks/servicos";
+import { produtosTecnologia } from "../mocks/produtos";
 import "./home.css";
 
 function useQuery() {
@@ -52,6 +53,21 @@ function Home() {
     const novaQuantidade = carrinhoAtual.reduce((acc, item) => acc + (item.quantidade || 1), 0);
     setQtdCarrinho(novaQuantidade);
     
+    navigate("/checkout");
+  };
+
+  // Adiciona o produto ao carrinho no localStorage (sem duplicar)
+  const handleAdicionarProduto = (produto) => {
+    const carrinhoAtual = JSON.parse(localStorage.getItem("carrinho")) || [];
+    const index = carrinhoAtual.findIndex((item) => item.id === produto.id && item.tipo === "produto");
+    if (index >= 0) {
+      carrinhoAtual[index].quantidade = (carrinhoAtual[index].quantidade || 1) + 1;
+    } else {
+      carrinhoAtual.push({ ...produto, quantidade: 1, tipo: "produto" });
+    }
+    localStorage.setItem("carrinho", JSON.stringify(carrinhoAtual));
+    const novaQuantidade = carrinhoAtual.reduce((acc, item) => acc + (item.quantidade || 1), 0);
+    setQtdCarrinho(novaQuantidade);
     navigate("/checkout");
   };
 
@@ -127,6 +143,45 @@ function Home() {
             ))}
           </Row>
         )}
+      </Container>
+      <Container className="home-container mt-4">
+        <h2 className="home-title">Produtos de Tecnologia</h2>
+        <Row>
+          {produtosTecnologia.map((produto) => (
+            <Col key={produto.id} sm={12} md={6} lg={4} className="mb-4">
+              <Card className="service-card">
+                <Card.Img
+                  variant="top"
+                  src={produto.imagem}
+                  alt={produto.nome}
+                  style={{ height: "220px", objectFit: "cover" }}
+                />
+                <Card.Body>
+                  <Card.Title>{produto.nome}</Card.Title>
+                  <Card.Text>{produto.descricao}</Card.Text>
+                  <Card.Text>
+                    <span className="price">R$ {produto.preco.toFixed(2)}</span> <br />
+                    <span className="categoria">Categoria: {produto.categoria}</span>
+                  </Card.Text>
+                  {produto.estoque > 0 ? (
+                    <Badge className="badge-disponivel mb-2">Em estoque: {produto.estoque}</Badge>
+                  ) : (
+                    <Badge className="badge-indisponivel mb-2">Esgotado</Badge>
+                  )}
+                  <div>
+                    <Button
+                      className="btn-solicitar"
+                      disabled={produto.estoque === 0}
+                      onClick={() => handleAdicionarProduto(produto)}
+                    >
+                      Adicionar ao carrinho
+                    </Button>
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
       </Container>
       <Footer />
     </>
