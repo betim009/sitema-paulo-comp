@@ -5,6 +5,8 @@ import Erro from './pages/Erro';
 import Login from './pages/Login';
 import Checkout from './pages/Checkout';
 import Register from "./pages/Register";
+import ProdutoDetalhe from "./pages/ProdutoDetalhe";
+import ServicoDetalhe from "./pages/ServicoDetalhe";
 
 function App() {
   return (
@@ -15,10 +17,11 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/produto/:id" element={<ProdutoDetalhe />} />
+        <Route path="/servico/:id" element={<ServicoDetalhe />} />
         <Route path="*" element={<Erro />} />
       </Routes>
     </>
   );
 }
-{/*finalização */}
 export default App;

@@ -1,0 +1,212 @@
+/* Estilos para a página Sobre */
+.sobre-container {
+  padding: 20px 0;
+}
+
+.sobre-header {
+  margin-bottom: 40px;
+}
+
+.sobre-title {
+  color: #2c3e50;
+  font-weight: 700;
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sobre-subtitle {
+  color: #7f8c8d;
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+/* Cards principais */
+.sobre-card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(52, 152, 219, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+}
+
+.sobre-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(52, 152, 219, 0.2);
+}
+
+.sobre-card .card-title {
+  color: #2c3e50;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.sobre-card .card-text {
+  color: #34495e;
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+/* Cards de funcionalidades */
+.feature-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  height: 100%;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+}
+
+.feature-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(52, 152, 219, 0.2);
+}
+
+.feature-icon {
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.feature-title {
+  color: #2c3e50;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 1.3rem;
+}
+
+.feature-text {
+  color: #34495e;
+  line-height: 1.6;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.badge-feature {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
+  color: white !important;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  display: block;
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* Card de informações */
+.info-card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(52, 152, 219, 0.15);
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+}
+
+.info-card .card-title {
+  color: #2c3e50;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-size: 1.8rem;
+}
+
+.funcionalidade-item {
+  margin-bottom: 1.5rem;
+  padding: 15px;
+  border-radius: 8px;
+  background: rgba(52, 152, 219, 0.05);
+  transition: all 0.3s ease;
+}
+
+.funcionalidade-item:hover {
+  background: rgba(52, 152, 219, 0.1);
+  transform: translateX(5px);
+}
+
+.funcionalidade-item h4 {
+  color: #2c3e50;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.funcionalidade-item p {
+  color: #34495e;
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+/* Cards de contato */
+.contact-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  height: 100%;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+}
+
+.contact-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(52, 152, 219, 0.2);
+}
+
+.contact-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.contact-card h4 {
+  color: #2c3e50;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.contact-card p {
+  color: #7f8c8d;
+  margin-bottom: 0;
+  font-weight: 500;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .sobre-title {
+    font-size: 2rem;
+  }
+  
+  .sobre-subtitle {
+    font-size: 1rem;
+  }
+  
+  .feature-icon {
+    font-size: 2.5rem;
+  }
+  
+  .feature-title {
+    font-size: 1.2rem;
+  }
+  
+  .contact-icon {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .sobre-container {
+    padding: 15px 0;
+  }
+  
+  .sobre-title {
+    font-size: 1.8rem;
+  }
+  
+  .funcionalidade-item {
+    padding: 10px;
+  }
+  
+  .funcionalidade-item h4 {
+    font-size: 1rem;
+  }
+} 

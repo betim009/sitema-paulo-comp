@@ -3,8 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Card, Button, Row, Col, Container, Badge } from "react-bootstrap";
-import { servicosManutencao } from "../mocks/servicos";
-import { produtosTecnologia } from "../mocks/produtos";
+import { servicosManutencao, servicosPorCategoria, getCategoriasServicos } from "../mocks/servicos";
+import { produtosTecnologia, produtosPorCategoria, getCategoriasProdutos } from "../mocks/produtos";
 import "./home.css";
 
 function useQuery() {
@@ -78,6 +78,88 @@ function Home() {
       servico.descricao.toLowerCase().includes(termoBusca)
   );
 
+  // Filtra os produtos pelo termo de busca (nome ou descrição)
+  const produtosFiltrados = produtosTecnologia.filter(
+    (produto) =>
+      produto.nome.toLowerCase().includes(termoBusca) ||
+      produto.descricao.toLowerCase().includes(termoBusca)
+  );
+
+  // Renderiza um card de serviço
+  const renderServicoCard = (servico) => (
+    <Col key={servico.id} sm={12} md={6} lg={4} className="mb-4">
+      <Card className="service-card card-clickable" onClick={() => navigate(`/servico/${servico.id}`)} style={{ cursor: 'pointer' }}>
+        <Card.Img
+          variant="top"
+          src={servico.poster}
+          alt={servico.nome}
+        />
+        <Card.Body>
+          <Card.Title>{servico.nome}</Card.Title>
+          <Card.Text>{servico.descricao}</Card.Text>
+          <Card.Text>
+            <span className="price">R$ {servico.preco.toFixed(2)}</span> <br />
+            <span className="duration">Duração: {servico.duracao}</span>
+          </Card.Text>
+          {servico.disponivel ? (
+            <Badge className="badge-disponivel mb-2">
+              Disponível
+            </Badge>
+          ) : (
+            <Badge className="badge-indisponivel mb-2">
+              Indisponível
+            </Badge>
+          )}
+          <div>
+            <Button
+              className="btn-solicitar"
+              disabled={!servico.disponivel}
+              onClick={e => { e.stopPropagation(); handleSolicitar(servico); }}
+            >
+              Solicitar serviço
+            </Button>
+          </div>
+        </Card.Body>
+      </Card>
+    </Col>
+  );
+
+  // Renderiza um card de produto
+  const renderProdutoCard = (produto) => (
+    <Col key={produto.id} sm={12} md={6} lg={4} className="mb-4">
+      <Card className="service-card card-clickable" onClick={() => navigate(`/produto/${produto.id}`)} style={{ cursor: 'pointer' }}>
+        <Card.Img
+          variant="top"
+          src={produto.imagem}
+          alt={produto.nome}
+          style={{ height: "220px", objectFit: "cover" }}
+        />
+        <Card.Body>
+          <Card.Title>{produto.nome}</Card.Title>
+          <Card.Text>{produto.descricao}</Card.Text>
+          <Card.Text>
+            <span className="price">R$ {produto.preco.toFixed(2)}</span> <br />
+            <span className="categoria">Categoria: {produto.categoria}</span>
+          </Card.Text>
+          {produto.estoque > 0 ? (
+            <Badge className="badge-disponivel mb-2">Em estoque: {produto.estoque}</Badge>
+          ) : (
+            <Badge className="badge-indisponivel mb-2">Esgotado</Badge>
+          )}
+          <div>
+            <Button
+              className="btn-solicitar"
+              disabled={produto.estoque === 0}
+              onClick={e => { e.stopPropagation(); handleAdicionarProduto(produto); }}
+            >
+              Adicionar ao carrinho
+            </Button>
+          </div>
+        </Card.Body>
+      </Card>
+    </Col>
+  );
+
   return (
     <>
       <Header hideLogin={logado}>
@@ -98,90 +180,63 @@ function Home() {
           </Badge>
         )}
       </Header>
+      
+      {/* Seção de Serviços Organizados por Categoria */}
       <Container className="home-container mt-4">
-        <h2 className="home-title">Serviços</h2>
+        <h2 className="home-title">Serviços de Manutenção</h2>
         {servicosFiltrados.length === 0 ? (
           <p>Nenhum serviço encontrado.</p>
         ) : (
-          <Row>
-            {servicosFiltrados.map((servico) => (
-              <Col key={servico.id} sm={12} md={6} lg={4} className="mb-4">
-                <Card className="service-card">
-                  <Card.Img
-                    variant="top"
-                    src={servico.poster}
-                    alt={servico.nome}
-                  />
-                  <Card.Body>
-                    <Card.Title>{servico.nome}</Card.Title>
-                    <Card.Text>{servico.descricao}</Card.Text>
-                    <Card.Text>
-                      <span className="price">R$ {servico.preco.toFixed(2)}</span> <br />
-                      <span className="duration">Duração: {servico.duracao}</span>
-                    </Card.Text>
-                    {servico.disponivel ? (
-                      <Badge className="badge-disponivel mb-2">
-                        Disponível
-                      </Badge>
-                    ) : (
-                      <Badge className="badge-indisponivel mb-2">
-                        Indisponível
-                      </Badge>
-                    )}
-                    <div>
-                      <Button
-                        className="btn-solicitar"
-                        disabled={!servico.disponivel}
-                        onClick={() => handleSolicitar(servico)}
-                      >
-                        Solicitar serviço
-                      </Button>
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
+          <>
+            {getCategoriasServicos().map((categoria) => {
+              const servicosDaCategoria = servicosPorCategoria[categoria].filter(
+                (servico) =>
+                  servico.nome.toLowerCase().includes(termoBusca) ||
+                  servico.descricao.toLowerCase().includes(termoBusca)
+              );
+              
+              if (servicosDaCategoria.length === 0) return null;
+              
+              return (
+                <div key={categoria} className="mb-5">
+                  <h3 className="categoria-title">{categoria}</h3>
+                  <Row>
+                    {servicosDaCategoria.map(renderServicoCard)}
+                  </Row>
+                </div>
+              );
+            })}
+          </>
         )}
       </Container>
+
+      {/* Seção de Produtos Organizados por Categoria */}
       <Container className="home-container mt-4">
         <h2 className="home-title">Produtos de Tecnologia</h2>
-        <Row>
-          {produtosTecnologia.map((produto) => (
-            <Col key={produto.id} sm={12} md={6} lg={4} className="mb-4">
-              <Card className="service-card">
-                <Card.Img
-                  variant="top"
-                  src={produto.imagem}
-                  alt={produto.nome}
-                  style={{ height: "220px", objectFit: "cover" }}
-                />
-                <Card.Body>
-                  <Card.Title>{produto.nome}</Card.Title>
-                  <Card.Text>{produto.descricao}</Card.Text>
-                  <Card.Text>
-                    <span className="price">R$ {produto.preco.toFixed(2)}</span> <br />
-                    <span className="categoria">Categoria: {produto.categoria}</span>
-                  </Card.Text>
-                  {produto.estoque > 0 ? (
-                    <Badge className="badge-disponivel mb-2">Em estoque: {produto.estoque}</Badge>
-                  ) : (
-                    <Badge className="badge-indisponivel mb-2">Esgotado</Badge>
-                  )}
-                  <div>
-                    <Button
-                      className="btn-solicitar"
-                      disabled={produto.estoque === 0}
-                      onClick={() => handleAdicionarProduto(produto)}
-                    >
-                      Adicionar ao carrinho
-                    </Button>
-                  </div>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+        {produtosFiltrados.length === 0 ? (
+          <p>Nenhum produto encontrado.</p>
+        ) : (
+          <>
+            {getCategoriasProdutos().map((categoria) => {
+              const produtosDaCategoria = produtosPorCategoria[categoria].filter(
+                (produto) =>
+                  produto.nome.toLowerCase().includes(termoBusca) ||
+                  produto.descricao.toLowerCase().includes(termoBusca)
+              );
+              
+              if (produtosDaCategoria.length === 0) return null;
+              
+              return (
+                <div key={categoria} className="mb-5">
+                  <h3 className="categoria-title">{categoria}</h3>
+                  <Row>
+                    {produtosDaCategoria.map(renderProdutoCard)}
+                  </Row>
+                </div>
+              );
+            })}
+          </>
+        )}
       </Container>
       <Footer />
     </>
